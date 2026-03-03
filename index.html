@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Techno | روبوت تنظيف الألواح الشمسية</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        :root {
+            --neon-purple: #b721ff;
+            --neon-blue: #21d4fd;
+            --sunny-yellow: #ffd93d;
+            --coral-red: #ff6b6b;
+            --mint-green: #6bffb8;
+            --dark-bg: #1a1a2e;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark-bg), #16213e, #0f3460);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bffb8, #b721ff, #21d4fd);
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            text-shadow: 4px 4px 0 #ff6b6b, 8px 8px 0 #ffd93d, 12px 12px 0 #6bffb8;
+            color: white;
+        }
+
+        .lang-switch button {
+            padding: 0.8rem 2rem;
+            margin: 0 0.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            background: white;
+            color: var(--dark-bg);
+            font-size: 1.1rem;
+        }
+
+        .lang-switch button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--neon-blue);
+        }
+
+        .page-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .page-btn.active {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--sunny-yellow);
+            background: linear-gradient(45deg, var(--sunny-yellow), var(--coral-red));
+        }
+
+        .page {
+            display: none;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1400px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active-page {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .project-image {
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .project-image img {
+            width: 100%;
+            border-radius: 15px;
+            border: 3px solid white;
+        }
+
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .component-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 1.5rem 1rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .component-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.3);
+        }
+
+        .component-card i {
+            font-size: 2.5rem;
+            color: var(--sunny-yellow);
+            margin-bottom: 0.5rem;
+        }
+
+        .pdf-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: linear-gradient(90deg, #ff6b6b, #ffd93d);
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .pdf-btn {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: var(--dark-bg);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: 0.3s;
+            margin: 1rem;
+        }
+
+        .pdf-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px white;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .social-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .whatsapp { background: #25D366; }
+        .facebook { background: #1877F2; }
+        .instagram { background: linear-gradient(45deg, #f09433, #d62976, #962fbf); }
+
+        .team-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .team-header h2 {
+            font-size: 3.5rem;
+            background: linear-gradient(90deg, var(--sunny-yellow), var(--mint-green), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .member-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--dark-bg);
+            transition: 0.3s;
+            border: 2px solid transparent;
+            animation: borderColor 4s infinite;
+        }
+
+        @keyframes borderColor {
+            0% { border-color: #ff6b6b; }
+            25% { border-color: #ffd93d; }
+            50% { border-color: #6bffb8; }
+            75% { border-color: #b721ff; }
+            100% { border-color: #ff6b6b; }
+        }
+
+        .member-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 40px rgba(0,0,0,0.4);
+        }
+
+        .member-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            overflow: hidden;
+            border: 3px solid var(--neon-blue);
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bffb8, #b721ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .member-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .member-img i {
+            font-size: 4rem;
+            color: white;
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .video-feed {
+            background: #000;
+            border-radius: 20px;
+            padding: 1rem;
+            border: 3px solid var(--neon-blue);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            border-radius: 15px;
+            border: 2px dashed var(--neon-purple);
+        }
+
+        .controls {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .connection-bar {
+            background: var(--dark-bg);
+            padding: 1rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .ip-display {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 1.2rem;
+        }
+
+        .test-connection-btn {
+            background: var(--mint-green);
+            color: var(--dark-bg);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .change-ip-btn {
+            background: var(--sunny-yellow);
+            color: var(--dark-bg);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .battery-status {
+            background: linear-gradient(90deg, #00b894, #00cec9);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .joystick {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            max-width: 300px;
+            margin: 2rem auto;
+        }
+
+        .joy-btn {
+            aspect-ratio: 1;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .joy-btn:active {
+            transform: scale(0.9);
+            background: linear-gradient(45deg, var(--sunny-yellow), var(--coral-red));
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            background: var(--coral-red);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px white;
+        }
+
+        .command-status {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+            margin-top: 3rem;
+            border-radius: 30px 30px 0 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <h1>TEAM TECHNO</h1>
+        </div>
+        <div class="lang-switch">
+            <button onclick="changeLang('ar')">🇸🇦 العربية</button>
+            <button onclick="changeLang('en')">🇬🇧 English</button>
+        </div>
+    </div>
+
+    <div class="page-nav">
+        <button class="page-btn active" onclick="showPage(1)">🏠 الرئيسية</button>
+        <button class="page-btn" onclick="showPage(2)">👥 الفريق (32)</button>
+        <button class="page-btn" onclick="showPage(3)">📋 المشروع</button>
+        <button class="page-btn" onclick="showPage(4)">🎮 التحكم</button>
+    </div>
+
+    <!-- الصفحة 1: الرئيسية -->
+    <div id="page1" class="page active-page">
+        <div class="hero">
+            <div class="project-image">
+                <img src="https://via.placeholder.com/600x400/6c5ce7/ffffff?text=Robot+Solar+Cleaner" alt="روبوت تنظيف الألواح الشمسية">
+                <h2 style="text-align: center; margin-top: 1rem; color: var(--sunny-yellow);">🤖 روبوت تنظيف الألواح الشمسية</h2>
+            </div>
+            <div>
+                <h2 style="color: var(--sunny-yellow); font-size: 2rem; margin-bottom: 1rem;">🔧 المكونات</h2>
+                <div class="components-grid">
+                    <div class="component-card"><i class="fas fa-microchip"></i> Raspberry Pi 4</div>
+                    <div class="component-card"><i class="fas fa-microchip"></i> Arduino MEGA</div>
+                    <div class="component-card"><i class="fas fa-battery-full"></i> LiFePO4 12V</div>
+                    <div class="component-card"><i class="fas fa-motorcycle"></i> محركات 25GA370</div>
+                    <div class="component-card"><i class="fas fa-camera"></i> كاميرا</div>
+                    <div class="component-card"><i class="fas fa-brush"></i> فرشاة دوارة</div>
+                    <div class="component-card"><i class="fas fa-water"></i> مضخة مياه</div>
+                    <div class="component-card"><i class="fas fa-eye"></i> حساس TOF</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pdf-section">
+            <h2 style="color: white; font-size: 2.5rem; margin-bottom: 1rem;">📚 كتاب المشروع الكامل</h2>
+            <a href="#" class="pdf-btn" download>
+                <i class="fas fa-download"></i> تحميل PDF
+            </a>
+        </div>
+
+        <div class="social-links">
+            <a href="#" class="social-icon whatsapp"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+
+    <!-- الصفحة 2: الفريق (32 عضو مع صور افتراضية) -->
+    <div id="page2" class="page">
+        <div class="team-header">
+            <h2>👥 فريق Team Techno</h2>
+            <p style="font-size: 1.5rem; color: var(--mint-green);">32 مهندس ومهندسة يعملون معاً</p>
+        </div>
+        <div class="team-grid" id="teamGrid"></div>
+    </div>
+
+    <!-- الصفحة 3: المشروع -->
+    <div id="page3" class="page">
+        <div class="team-header">
+            <h2>📋 عن المشروع</h2>
+        </div>
+        <div class="project-details" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div class="detail-box" style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 2rem; border-right: 5px solid var(--neon-purple);">
+                <i class="fas fa-robot" style="color: var(--neon-blue); font-size: 3rem;"></i>
+                <h3>🤖 فكرة المشروع</h3>
+                <p>روبوت ذكي لتنظيف الألواح الشمسية باستخدام الذكاء الاصطناعي ومعالجة الصور، يتحرك أوتوماتيكياً على طول الألواح وينظفها بدون تدخل بشري.</p>
+            </div>
+            <div class="detail-box" style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 2rem; border-right: 5px solid var(--neon-blue);">
+                <i class="fas fa-microchip" style="color: var(--neon-purple); font-size: 3rem;"></i>
+                <h3>⚡ المعالجات</h3>
+                <p>Raspberry Pi 4 للمعالجة الرئيسية و OpenCV، و Arduino MEGA للتحكم المباشر بالمحركات والحساسات.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- الصفحة 4: التحكم -->
+    <div id="page4" class="page">
+        <div class="control-panel">
+            <div class="video-feed">
+                <h3 style="text-align: center; margin-bottom: 1rem;">📹 كاميرا الروبوت</h3>
+                <div class="video-placeholder" id="videoPlaceholder">
+                    <i class="fas fa-video" style="font-size: 5rem; opacity: 0.5;"></i>
+                    <span style="margin-right: 1rem;">بث مباشر</span>
+                </div>
+                <img id="cameraFeed" style="display: none; width: 100%; border-radius: 15px;" src="">
+            </div>
+            
+            <div class="controls">
+                <h3 style="text-align: center; margin-bottom: 2rem;">🎮 لوحة التحكم</h3>
+                
+                <div class="connection-bar">
+                    <span><i class="fas fa-wifi"></i> عنوان IP: <span class="ip-display" id="currentIP">192.168.1.100</span></span>
+                    <div>
+                        <button class="test-connection-btn" onclick="testConnection()"><i class="fas fa-sync-alt"></i> اختبار</button>
+                        <button class="change-ip-btn" onclick="changeIP()"><i class="fas fa-edit"></i> تغيير</button>
+                    </div>
+                </div>
+                
+                <div class="battery-status" id="batteryStatus">
+                    <i class="fas fa-battery-full battery-icon"></i>
+                    <h4>نسبة البطارية: <span id="batteryLevel">87</span>%</h4>
+                    <progress id="batteryProgress" value="87" max="100" style="width: 100%; height: 20px; border-radius: 10px;"></progress>
+                </div>
+                
+                <h4 style="text-align: center;">🕹️ ذراع التحكم</h4>
+                <div class="joystick">
+                    <div></div>
+                    <button class="joy-btn" onclick="sendCommand('forward')"><i class="fas fa-arrow-up"></i></button>
+                    <div></div>
+                    <button class="joy-btn" onclick="sendCommand('left')"><i class="fas fa-arrow-left"></i></button>
+                    <button class="joy-btn" onclick="sendCommand('stop')"><i class="fas fa-stop"></i></button>
+                    <button class="joy-btn" onclick="sendCommand('right')"><i class="fas fa-arrow-right"></i></button>
+                    <div></div>
+                    <button class="joy-btn" onclick="sendCommand('backward')"><i class="fas fa-arrow-down"></i></button>
+                    <div></div>
+                </div>
+                
+                <div class="action-btns">
+                    <button class="action-btn" onclick="sendCommand('start_cleaning')" style="background: #00b894;"><i class="fas fa-play"></i> بدء التنظيف</button>
+                    <button class="action-btn" onclick="sendCommand('stop_cleaning')" style="background: #d63031;"><i class="fas fa-stop"></i> إيقاف</button>
+                    <button class="action-btn" onclick="sendCommand('emergency_stop')" style="background: #e17055;"><i class="fas fa-exclamation-triangle"></i> طوارئ</button>
+                </div>
+                
+                <div class="command-status" id="commandStatus">
+                    ⏳ أدخل IP الروبوت للتحكم
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 Team Techno - مشروع تخرج | روبوت تنظيف الألواح الشمسية</p>
+    </footer>
+
+    <script>
+        // ========== بيانات الفريق كاملة (32 عضو) ==========
+        const teamMembers = [
+            // القيادة
+            { name: "أحمد محمد عبدالله", role: "قائد الفريق - مهندس ميكاترونكس", image: "https://i.pravatar.cc/150?img=1" },
+            { name: "سارة أحمد علي", role: "نائب القائد - مهندسة برمجيات", image: "https://i.pravatar.cc/150?img=2" },
+            { name: "محمد عبدالعزيز", role: "منسق المشروع", image: "https://i.pravatar.cc/150?img=3" },
+            
+            // فريق الميكاترونكس
+            { name: "فاطمة الزهراء", role: "مهندسة ميكاترونكس", image: "https://i.pravatar.cc/150?img=4" },
+            { name: "عمر حسن سعد", role: "مهندس ميكانيكا", image: "https://i.pravatar.cc/150?img=5" },
+            { name: "نورا خالد", role: "مهندسة كهرباء", image: "https://i.pravatar.cc/150?img=6" },
+            { name: "يوسف عبدالله", role: "فني ميكانيكا", image: "https://i.pravatar.cc/150?img=7" },
+            { name: "ليلى إبراهيم", role: "مهندسة إلكترونيات", image: "https://i.pravatar.cc/150?img=8" },
+            { name: "خالد سعد", role: "مهندس تحكم", image: "https://i.pravatar.cc/150?img=9" },
+            
+            // فريق البرمجيات
+            { name: "ريم عادل", role: "مطورة برمجيات", image: "https://i.pravatar.cc/150?img=10" },
+            { name: "عبدالرحمن ناصر", role: "مبرمج بايثون", image: "https://i.pravatar.cc/150?img=11" },
+            { name: "هند وليد", role: "مطورة واجهات", image: "https://i.pravatar.cc/150?img=12" },
+            { name: "فيصل عمر", role: "متخصص ذكاء اصطناعي", image: "https://i.pravatar.cc/150?img=13" },
+            { name: "أمل عبدالعزيز", role: "مبرمجة C++", image: "https://i.pravatar.cc/150?img=14" },
+            { name: "تركي سليمان", role: "مطور أنظمة", image: "https://i.pravatar.cc/150?img=15" },
+            
+            // فريق الإلكترونيات
+            { name: "غادة فهد", role: "مهندسة إلكترونيات", image: "https://i.pravatar.cc/150?img=16" },
+            { name: "ماجد إبراهيم", role: "فني إلكترونيات", image: "https://i.pravatar.cc/150?img=17" },
+            { name: "أريج بدر", role: "مهندسة اتصالات", image: "https://i.pravatar.cc/150?img=18" },
+            { name: "سلطان منصور", role: "متخصص حساسات", image: "https://i.pravatar.cc/150?img=19" },
+            { name: "الجوهرة سعد", role: "مهندسة شبكات", image: "https://i.pravatar.cc/150?img=20" },
+            
+            // فريق التصميم
+            { name: "عبدالعزيز فهد", role: "مصمم ميكانيكي", image: "https://i.pravatar.cc/150?img=21" },
+            { name: "مشاعل تركي", role: "مصممة جرافيك", image: "https://i.pravatar.cc/150?img=22" },
+            { name: "سعود بندر", role: "مهندس تصميم", image: "https://i.pravatar.cc/150?img=23" },
+            { name: "شهد حمد", role: "مصممة UI/UX", image: "https://i.pravatar.cc/150?img=24" },
+            
+            // فريق الاختبارات
+            { name: "نايف راشد", role: "مهندس اختبارات", image: "https://i.pravatar.cc/150?img=25" },
+            { name: "ربى سامي", role: "مسؤولة جودة", image: "https://i.pravatar.cc/150?img=26" },
+            { name: "حاتم زيد", role: "فني اختبارات", image: "https://i.pravatar.cc/150?img=27" },
+            
+            // فريق الدعم
+            { name: "أثير نايف", role: "منسقة إعلامية", image: "https://i.pravatar.cc/150?img=28" },
+            { name: "عبدالملك فيصل", role: "مسؤول توثيق", image: "https://i.pravatar.cc/150?img=29" },
+            { name: "منيرة سعود", role: "باحثة علمية", image: "https://i.pravatar.cc/150?img=30" },
+            { name: "بدرية حمد", role: "كاتبة محتوى", image: "https://i.pravatar.cc/150?img=31" },
+            { name: "مشعل عبدالله", role: "دعم فني", image: "https://i.pravatar.cc/150?img=32" }
+        ];
+
+        // ========== دوال التحكم ==========
+        let raspberryPiIP = '192.168.1.100';
+        const PI_PORT = '5000';
+
+        function displayTeam() {
+            const teamGrid = document.getElementById('teamGrid');
+            teamGrid.innerHTML = '';
+            
+            teamMembers.forEach(member => {
+                const card = document.createElement('div');
+                card.className = 'member-card';
+                
+                card.innerHTML = `
+                    <div class="member-img">
+                        <img src="${member.image}" alt="${member.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/6c5ce7/ffffff?text=${member.name.charAt(0)}';">
+                    </div>
+                    <h3 style="color: var(--dark-bg); margin-bottom: 0.5rem;">${member.name}</h3>
+                    <p style="color: var(--neon-purple); font-weight: bold;">${member.role}</p>
+                    <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 1rem;">
+                        <i class="fab fa-linkedin" style="color: #0077b5; cursor: pointer;"></i>
+                        <i class="fab fa-github" style="color: #333; cursor: pointer;"></i>
+                        <i class="fas fa-envelope" style="color: #ea4335; cursor: pointer;"></i>
+                    </div>
+                `;
+                
+                teamGrid.appendChild(card);
+            });
+        }
+
+        async function sendCommand(command) {
+            const statusDiv = document.getElementById('commandStatus');
+            const cmdNames = {
+                'forward': 'تقدم للأمام',
+                'backward': 'رجوع للخلف',
+                'left': 'انعطاف يسار',
+                'right': 'انعطاف يمين',
+                'stop': 'توقف',
+                'start_cleaning': 'بدء التنظيف',
+                'stop_cleaning': 'إيقاف التنظيف',
+                'emergency_stop': 'توقف طارئ'
+            };
+
+            try {
+                statusDiv.innerHTML = `🔄 جاري إرسال أمر "${cmdNames[command]}"...`;
+                
+                const response = await fetch(`http://${raspberryPiIP}:${PI_PORT}/command/${command}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDiv.innerHTML = `✅ تم تنفيذ: ${cmdNames[command]}`;
+                    if (data.battery) updateBattery(data.battery);
+                } else {
+                    statusDiv.innerHTML = `❌ فشل التنفيذ - تأكد من الاتصال`;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `❌ لا يمكن الاتصال بالروبوت (${raspberryPiIP}:${PI_PORT})`;
+            }
+        }
+
+        async function testConnection() {
+            const statusDiv = document.getElementById('commandStatus');
+            
+            try {
+                statusDiv.innerHTML = `🔄 جاري اختبار الاتصال بـ ${raspberryPiIP}...`;
+                
+                const response = await fetch(`http://${raspberryPiIP}:${PI_PORT}/test`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDiv.innerHTML = `✅ متصل بالروبوت بنجاح!`;
+                    if (data.battery) updateBattery(data.battery);
+                    startCamera();
+                } else {
+                    statusDiv.innerHTML = `❌ فشل الاتصال - تحقق من IP`;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `❌ لا يمكن الاتصال - تأكد أن الروبوت شغال`;
+            }
+        }
+
+        function startCamera() {
+            document.getElementById('videoPlaceholder').style.display = 'none';
+            const cameraFeed = document.getElementById('cameraFeed');
+            cameraFeed.style.display = 'block';
+            cameraFeed.src = `http://${raspberryPiIP}:${PI_PORT}/video_feed`;
+        }
+
+        function updateBattery(level) {
+            document.getElementById('batteryLevel').textContent = level;
+            document.getElementById('batteryProgress').value = level;
+        }
+
+        function changeIP() {
+            const newIP = prompt('أدخل عنوان IP الخاص بـ Raspberry Pi:', raspberryPiIP);
+            if (newIP) {
+                raspberryPiIP = newIP;
+                document.getElementById('currentIP').textContent = newIP;
+            }
+        }
+
+        function showPage(pageNum) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(`page${pageNum}`).classList.add('active-page');
+            document.querySelectorAll('.page-btn')[pageNum-1].classList.add('active');
+            
+            if (pageNum === 2) displayTeam();
+        }
+
+        function changeLang(lang) {
+            alert(lang === 'ar' ? 'تم التبديل للعربية' : 'Switched to English');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showPage(1);
+        });
+    </script>
+</body>
+</html>
